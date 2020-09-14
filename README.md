@@ -16,7 +16,7 @@ This project should be considered to be experimental, expect firmware to be upda
 
 ## Version
 
-September 2020 - test of version 0 to version .5 (current)  
+September 2020 - test of software version 0 to version 0.0.5 (current)  
 
 
 ## Contributing
