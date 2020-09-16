@@ -2,7 +2,7 @@ void radioon(){
  LoRa.setPins(SS,RST,DI0);
   
   if (!LoRa.begin(BAND)) {
-    Serial.println("Starting LoRa failed!");
+    serialPrt("Starting LoRa failed!");
     while (1);
   }
   LoRa.enableCrc(); //encable CRC checking - off by default
@@ -27,9 +27,9 @@ void setupWiFi() {
     delay(500);
     Serial.print(".");
   }
-Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+serialPrt("");
+  serialPrt("WiFi connected");
+  serialPrt("IP address: ");
+  serialPrt(WiFi.localIP());
   randomSeed(micros());
 }

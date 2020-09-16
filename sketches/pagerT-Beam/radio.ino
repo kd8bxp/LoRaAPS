@@ -2,7 +2,7 @@ void radioon(){
  LoRa.setPins(SS,RST,DI0);
   
   if (!LoRa.begin(BAND)) {
-    Serial.println("Starting LoRa failed!");
+    serialPrt("Starting LoRa failed!");
     while (1);
   }
   LoRa.enableCrc(); //encable CRC checking - off by default
@@ -22,9 +22,9 @@ void radiooff(){
 
 void startGPS() {
    if (!axp.begin(Wire, AXP192_SLAVE_ADDRESS)) {
-    Serial.println("AXP192 Begin PASS");
+    serialPrt("AXP192 Begin PASS");
   } else {
-    Serial.println("AXP192 Begin FAIL");
+    serialPrt("AXP192 Begin FAIL");
   }
   axp.setPowerOutPut(AXP192_LDO2, AXP202_ON);
   axp.setPowerOutPut(AXP192_LDO3, AXP202_ON);

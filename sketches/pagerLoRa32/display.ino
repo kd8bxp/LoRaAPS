@@ -27,6 +27,8 @@ void wordWrap(String sr) {
  void displayMsg(String ft, String mt) {
   oled.clear();
   oled.println("\nFrom: " + ft);
+  serialPrt("From: " +ft);
+  serialPrt(mt);
   wordWrap(mt);
   
  }

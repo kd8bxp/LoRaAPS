@@ -19,7 +19,8 @@ void rx() {
 void checkPacket(String pkt) {
 
 if (pkt.indexOf(CALLSIGN) > 0) {
-      
+  serialPrt("RX: ");
+      serialPrt(pkt);
  // For other devices this is were the message can be displayed for a Relay & Gateway, this is where the message stops if addressed to the relay call sign (no one will probably ever see this message)
  // also check to see if this device retransmitted the message, if it retransmitted, then it should NOT display the message
 } else {
@@ -51,7 +52,7 @@ void fromMQTT(String pkt) {
     StaticJsonBuffer<500> jsonBuffer;
    JsonObject& root = jsonBuffer.parseObject(pkt);
    if (!root.success()) {
-    Serial.println("Invaild Packet from MQTT!"); //reject if not a vaild JSON string
+    serialPrt("Invaild Packet from MQTT!"); //reject if not a vaild JSON string
     return;
   }
   //Reset re-transmit count, add our callsign, and transmitt message from MQTT broker

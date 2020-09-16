@@ -1,7 +1,7 @@
 //This sketch is written for the LoRa32u4 board, It should be used as a RELAY/WIDE digipeater
 //It can also be used as a serial interface if connected to a computer. But would take some work to get it to gate to the MQTT broker
 //This sketch should be able to be adapted for other AVR boards 
-// September 2020, base version code 0.5.0 
+// September 2020, base version code 0.0.5 
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  

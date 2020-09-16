@@ -25,7 +25,7 @@ if (pkt.indexOf(CALLSIGN) > 0) {
 
   // Test if parsing succeeds.
   if (!root.success()) {
-    Serial.println("parseObject() failed");
+    serialPrt("parseObject() failed");
     return;
   }
   //Our Callsign was found, now let's see if we sent the message. Could probably also check the "P" or path of the json string

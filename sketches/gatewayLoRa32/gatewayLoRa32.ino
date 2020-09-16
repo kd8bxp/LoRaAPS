@@ -1,7 +1,8 @@
 //This sketch is written for a ESP32 LoRa board, either the LoRa32, or T-BEAM, the oled is not used. It should be used as a GATEWAY digipeater
 //It can also be used as a serial interface if connected to a computer. 
 //This sketch should be able to be adapted for other boards 
-// September 2020, base version code 0.5.0 
+// September 2020, base version code 0.0.5 
+// Sept 14, 2020 added serial print messages v0.0.6
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -42,8 +43,8 @@
 #define CQMSG "LoRaAPS net gateway"
 String CALLSIGN="N0CAL-50"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
-const char* ssid = "....."; //set ssid of your wifi router
-const char* password = "....."; //set password of your router
+const char* ssid = "...."; //set ssid of your wifi router
+const char* password = "...."; //set password of your router
 const char* mqtt_server = "broker.mqtt-dashboard.com"; //public MQTT Broker
 char* topic = "/hamradio/loraradio/message/pager/loraham/v2/"; //This broker and topic are able to be seen by the public do not send anything sensitive, effectly these message is sent in the clear
 

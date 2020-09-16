@@ -2,7 +2,8 @@
 //Bluetooth enabled for using a Serial Bluetooth terminal on the phone.  
 //It can also be used as a serial interface if connected to a computer. 
 //This sketch should be able to be adapted for other boards (AVR/ESP32)
-// September 2020, base version code 0.5.0 
+// September 2020, base version code 0.0.5
+// Sept 14, 2020 added serial/bluetooth print messages v0.0.6
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  

@@ -20,7 +20,7 @@ void reconnect() {
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
-      Serial.println("connected");
+      serialPrt("connected");
       // Once connected, publish an announcement...
       String tempHello = CALLSIGN + " Hello World."; //announce gateway is online
       char buf[tempHello.length()+1];
@@ -29,9 +29,9 @@ void reconnect() {
       // ... and resubscribe
       client.subscribe(topic);
     } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 1 second");
+      serialPrt("failed, rc=");
+      serialPrt(client.state());
+      serialPrt(" try again in 1 second");
       delay(1000); //our reconnect timer is faster 
     }
   //}

@@ -2,7 +2,7 @@ void radioon(){
  LoRa.setPins(SS,RST,DI0);
   
   if (!LoRa.begin(BAND)) {
-    Serial.println("Starting LoRa failed!");
+    serialPrt("Starting LoRa failed!");
     while (1);
   }
   LoRa.enableCrc(); //encable CRC checking - off by default

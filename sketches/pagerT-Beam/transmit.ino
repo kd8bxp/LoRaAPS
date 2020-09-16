@@ -26,7 +26,8 @@ void txMsg(){
    
   root.printTo(radiopacket);
   LoRa.print(radiopacket);
-  Serial.println(radiopacket);
+  serialPrt("Transmitting....");
+  serialPrt(radiopacket);
   LoRa.endPacket();
   radiopacket="";
   call = "";
@@ -42,7 +43,8 @@ void digipeat(String radiopacket) {
   LoRa.beginPacket();
     
   LoRa.print(radiopacket);
-  Serial.println(radiopacket);
+  serialPrt("Digipeating....");
+  serialPrt(radiopacket);
   LoRa.endPacket();
     radiopacket="";
     call="";

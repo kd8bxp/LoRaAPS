@@ -8,7 +8,7 @@ void serialParse() {
    
     
     inputCheck();
-    if (pass1 == true && pass2 == true && pass3 == true) { Serial.println("Sending message"); txMsg();} else { Serial.println("Not sending..."); }
+    if (pass1 == true && pass2 == true && pass3 == true) { serialPrt("Sending message"); txMsg();} else { serialPrt("Not sending..."); }
       
     //reset flags to false
     callPassCheck = false;
@@ -47,4 +47,9 @@ void BTEvent() {
       serialParse();
   }
   }
+}
+
+void serialPrt(String m) {
+  ESP_BT.println(m);
+  Serial.println(m);
 }

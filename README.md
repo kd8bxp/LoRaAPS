@@ -17,7 +17,7 @@ This project should be considered to be experimental, expect firmware to be upda
 ## Version
 
 September 2020 - test of software version 0 to version 0.0.5 (current)  
-
+September 14, 2020 - corrected version numbers inside sketches, changed "gateway", "pager" sketches to add serial output of message recieved. Gateway just outputs the recieved JSON string as is, Pagers will format the output the same as on the OLED display.
 
 ## Contributing
 
