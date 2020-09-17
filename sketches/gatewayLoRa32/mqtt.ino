@@ -30,7 +30,7 @@ void reconnect() {
       client.subscribe(topic);
     } else {
       serialPrt("failed, rc=");
-      serialPrt(client.state());
+      serialPrt((String)client.state());
       serialPrt(" try again in 1 second");
       delay(1000); //our reconnect timer is faster 
     }

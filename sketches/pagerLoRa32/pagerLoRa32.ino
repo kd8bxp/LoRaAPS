@@ -4,6 +4,7 @@
 //This sketch should be able to be adapted for other boards (AVR/ESP32)
 // September 2020, base version code 0.5.0 
 // Sept 14, 2020 added serial/bluetooth print messages v0.0.6
+// September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string)
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -52,7 +53,7 @@
 SSD1306AsciiWire oled;
 
 #define CQMSG "LoRaAPS net pager"
-String CALLSIGN="N0CAL-00"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="KD8BXP-00"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
 int       loraSpreadingFactor = 9;

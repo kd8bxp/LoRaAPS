@@ -3,6 +3,8 @@
 //This sketch should be able to be adapted for other boards 
 // September 2020, base version code 0.0.5 
 // Sept 14, 2020 added serial print messages v0.0.6
+// Sept 15, 2020 0.0.6(a) fixed char converted to String error (opps)
+// September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string)
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -41,10 +43,10 @@
 #define LED 13 //LED Pin
 
 #define CQMSG "LoRaAPS net gateway"
-String CALLSIGN="N0CAL-50"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="KD8BXP-50"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
-const char* ssid = "...."; //set ssid of your wifi router
-const char* password = "...."; //set password of your router
+const char* ssid = "homeinternet"; //set ssid of your wifi router
+const char* password = "trixie4me"; //set password of your router
 const char* mqtt_server = "broker.mqtt-dashboard.com"; //public MQTT Broker
 char* topic = "/hamradio/loraradio/message/pager/loraham/v2/"; //This broker and topic are able to be seen by the public do not send anything sensitive, effectly these message is sent in the clear
 

@@ -29,8 +29,8 @@ if (pkt.indexOf(CALLSIGN) > 0) {
     return;
   }
   //Our Callsign was found, now let's see if we sent the message. Could probably also check the "P" or path of the json string
-  if (root["F"] != CALLSIGN) {
-  String f = root["F"];
+  if (root["P"][0] != CALLSIGN) {
+  String f = root["P"][0];
   String m = root["M"];
   displayMsg(f,m); //Display message
   }
@@ -43,7 +43,7 @@ if (pkt.indexOf(CALLSIGN) > 0) {
    //Check for BLT, BEACON, CQ, WX special callsigns
    String t = root["T"];
    if (t == "BEACON" || t == "CQ" || t == "WX" || t == "BLN") {
-    String f = root["F"];
+    String f = root["P"][0];
     String temp = f + "\n" + t;
     String m = root["M"];
     displayMsg(temp,m);

@@ -6,7 +6,7 @@ void txMsg(){
   StaticJsonBuffer<500> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   root["T"] = call; //TOCALL;
-  root["F"] = CALLSIGN; //FROM Call (my call)
+  //root["F"] = CALLSIGN; //FROM Call (my call)
   
   
   root["M"] = msg; //COMMENTS; //TEMP;

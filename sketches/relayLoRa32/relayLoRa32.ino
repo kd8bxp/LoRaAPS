@@ -1,7 +1,8 @@
 //This sketch is written for the LoRa32 ESP32 board, the oled is not used, It should be used as a RELAY/WIDE digipeater
 //It can also be used as a serial interface if connected to a computer. But would take some work to get it to gate to the MQTT broker
 //This sketch should be able to be adapted for other AVR boards 
-// September 2020, base version code 0.0.5 
+// September 2020, base version code 0.0.5
+// September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string) 
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -33,10 +34,10 @@
 #define DI0     26
 #define BAND    432300000 // local frequencys, must match!
 
-#define LED 2 //LED Pin 
+#define LED 13 //LED Pin
 
 #define CQMSG "LoRaAPS net digipeater"
-String CALLSIGN="N0CAL-50"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="KD8BXP-01"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
 int       loraSpreadingFactor = 9;

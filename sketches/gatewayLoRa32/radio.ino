@@ -30,6 +30,6 @@ void setupWiFi() {
 serialPrt("");
   serialPrt("WiFi connected");
   serialPrt("IP address: ");
-  serialPrt(WiFi.localIP());
+  serialPrt((String)WiFi.localIP());
   randomSeed(micros());
 }
