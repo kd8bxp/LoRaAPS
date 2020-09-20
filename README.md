@@ -17,7 +17,9 @@ This project should be considered to be experimental, expect firmware to be upda
 ## Version
 
 September 2020 - test of software version 0 to version 0.0.5 (current)  
-September 14, 2020 - corrected version numbers inside sketches, changed "gateway", "pager" sketches to add serial output of message recieved. Gateway just outputs the recieved JSON string as is, Pagers will format the output the same as on the OLED display.
+September 14, 2020 - corrected version numbers inside sketches, changed "gateway", "pager" sketches to add serial output of message recieved. Gateway just outputs the recieved JSON string as is, Pagers will format the output the same as on the OLED display.  
+September 16, 2020 - v0.0.7 removed "F" from transmit, changed checks to check "P" 0 for calsign (this should save a little more space in the json string). Added voltage reading for the T-Beam device  
+September 19, 2020 - v0.0.8 added button (control), added display for "P" path for the pagers (T-Beam, LoRa32)  
 
 ## Contributing
 

@@ -32,3 +32,28 @@ void wordWrap(String sr) {
   wordWrap(mt);
   
  }
+
+void displayCall() {
+  
+        oled.home();
+        oled.println("");
+        oled.print("My Call: ");
+        oled.println(CALLSIGN);
+        
+}
+
+void displayPath() {
+  oled.clear();
+  int count = 0;
+  for (int i=1;i<4;i++){
+    if (path[i].indexOf("N0CALL") > 0) {
+    oled.print("Hop "); oled.print(i); oled.println(": " + path[i]);
+    count++;
+    } 
+  }
+  
+  if (count == 0) {oled.println("Direct Connection"); } else {oled.print("Total Hops: "); oled.println(count); }
+  oled.println("");
+  oled.println("RSSI: " + rssi);
+}
+ 

@@ -37,7 +37,7 @@
 #define LED 13 //LED Pin
 
 #define CQMSG "LoRaAPS net digipeater"
-String CALLSIGN="KD8BXP-01"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="N0CAL-01"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
 int       loraSpreadingFactor = 9;

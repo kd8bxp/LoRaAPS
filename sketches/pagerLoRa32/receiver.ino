@@ -30,9 +30,13 @@ if (pkt.indexOf(CALLSIGN) > 0) {
   }
   //Our Callsign was found, now let's see if we sent the message. Could probably also check the "P" or path of the json string
   if (root["P"][0] != CALLSIGN) {
-  String f = root["P"][0];
-  String m = root["M"];
-  displayMsg(f,m); //Display message
+  from = root["P"][0].as<String>();
+  holdMsg = root["M"].as<String>();
+  for (int i=1;i<4;i++){
+  path[i] = root["P"][i].as<String>();
+  }
+  displayChange = 2;
+  displayMsg(from,holdMsg); //Display message
   }
  
 } else {
@@ -43,10 +47,11 @@ if (pkt.indexOf(CALLSIGN) > 0) {
    //Check for BLT, BEACON, CQ, WX special callsigns
    String t = root["T"];
    if (t == "BEACON" || t == "CQ" || t == "WX" || t == "BLN") {
-    String f = root["P"][0];
-    String temp = f + "\n" + t;
-    String m = root["M"];
-    displayMsg(temp,m);
+    from = root["P"][0].as<String>();
+    String temp = from + "\n" + t;
+    holdMsg = root["M"].as<String>();
+    displayChange = 2;
+    displayMsg(temp,holdMsg);
    }
    int rtcount = root["R"];
    int count = rtcount;

@@ -32,3 +32,46 @@ void wordWrap(String sr) {
   wordWrap(mt);
   
  }
+
+ void batteryCheck() {
+  if (axp.isBatteryConnect()) {
+    static char voltBuffer[128];
+    snprintf(voltBuffer, sizeof(voltBuffer), "Volts: %.2fV", axp.getBattVoltage() / 1000.0);
+    static char volbuffer[128];
+        snprintf(volbuffer, sizeof(volbuffer), "%.2fmA", axp.isChargeing() ? axp.getBattChargeCurrent() : axp.getBattDischargeCurrent());
+        //if (axp.isChargingIRQ()) {
+        //    baChStatus = "Charging";
+        //} else {
+        //    baChStatus = "Not Charging";
+        //}
+        //if (axp.isVbusRemoveIRQ()) {
+        //    baChStatus = "Not Charging";
+        // }
+        //oled.clear();
+        oled.home();
+        oled.println("");
+        oled.print("My Call: ");
+        oled.println(CALLSIGN);
+        oled.println("");
+        oled.println(voltBuffer);
+        oled.print(axp.isChargeing() ? "Charge: ":"Discharge: ");
+        oled.println(volbuffer);
+        
+        //oled.println("\nStatus: " + baChStatus);
+  }
+}
+
+void displayPath() {
+  oled.clear();
+  int count = 0;
+  for (int i=1;i<4;i++){
+    if (path[i].indexOf("N0CALL") > 0) {
+    oled.print("Hop "); oled.print(i); oled.println(": " + path[i]);
+    count++;
+    } 
+  }
+  
+  if (count == 0) {oled.println("Direct Connection"); } else {oled.print("Total Hops: "); oled.println(count); }
+  oled.println("");
+  oled.println("RSSI: " + rssi);
+}

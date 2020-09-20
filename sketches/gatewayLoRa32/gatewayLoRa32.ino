@@ -43,10 +43,10 @@
 #define LED 13 //LED Pin
 
 #define CQMSG "LoRaAPS net gateway"
-String CALLSIGN="KD8BXP-50"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="N0CAL-50"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
-const char* ssid = "homeinternet"; //set ssid of your wifi router
-const char* password = "trixie4me"; //set password of your router
+const char* ssid = "...."; //set ssid of your wifi router
+const char* password = "...."; //set password of your router
 const char* mqtt_server = "broker.mqtt-dashboard.com"; //public MQTT Broker
 char* topic = "/hamradio/loraradio/message/pager/loraham/v2/"; //This broker and topic are able to be seen by the public do not send anything sensitive, effectly these message is sent in the clear
 

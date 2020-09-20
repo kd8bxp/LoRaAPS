@@ -5,6 +5,8 @@
 // September 2020, base version code 0.0.5
 // Sept 14, 2020 added serial/bluetooth print messages v0.0.6
 // September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string)
+// September 16, 2020 version 0.0.7 (a) added voltage reading for display (only for T-Beam)
+// Sept 19, 2020 version 0.0.8 added button, added display path for T-Beam, and TTGO LoRa32
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -35,6 +37,7 @@
 #include "SSD1306AsciiWire.h"
 #include <TinyGPS++.h> //https://github.com/mikalhart/TinyGPSPlus
 #include <axp20x.h> //https://github.com/lewisxhe/AXP202X_Library
+#include "Button2.h"; //https://github.com/LennartHennigs/Button2
 
 //These must match for your specific board, these should work for the LoRa32u4 boards, but if it fails, check here.
 #define SS      18    
@@ -46,6 +49,7 @@
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
+#define BUTTON_PIN  38 //Button for TTGO T-Beam v1
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 //#define OLED_RESET     16 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -55,7 +59,7 @@
 SSD1306AsciiWire oled;
 
 #define CQMSG "LoRaAPS net pager"
-String CALLSIGN="KD8BXP-01"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="N0CAL-02"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
 int       loraSpreadingFactor = 9;
@@ -65,15 +69,21 @@ uint32_t  loraBandwidth       = 62500; //125E6;
 //This results in about 879bps if you believe this site https://unsigned.io/understanding-lora-parameters/
 //or maybe 488bps from this website https://www.rfwireless-world.com/calculators/LoRa-Data-Rate-Calculator.html
 
-String inputString;
+String inputString, msg;
 bool stringComplete = false;
-String call, msg;
+String call;
 String radiopacket;
 bool callPassCheck = false;
 bool msgPassCheck = false;
 bool pass1 = false;
 bool pass2 = false;
 bool pass3 = false;
+String baChStatus = "No charging"; //battery status
+int displayChange = 1;
+String from = "N0CAL-00";
+String holdMsg = "No Message";
+String path[4] = {"","N0CALL1", "N0CALL2", "N0CALL3"};
+String rssi;
 
 void beacon();
 TimedAction beaconAction 	= 	TimedAction(600000,beacon); //send an ID about every 10 minutes
@@ -81,6 +91,7 @@ BluetoothSerial ESP_BT; //Object for Bluetooth
 TinyGPSPlus gps;
 HardwareSerial GPS(1);
 AXP20X_Class axp;
+Button2 button = Button2(BUTTON_PIN);
 
 void setup() 
 {
@@ -93,12 +104,13 @@ void setup()
   //while (!Serial); //if just the the basic function, must connect to a computer
   delay(1000);
   inputString.reserve(200);
-  SPI.begin(5,19,27,18);
-  Wire.begin(21,22);
+  SPI.begin(5,19,27,18); //TTGO SPI PINs
+  Wire.begin(21,22); //TTGO T-BEAM OLED
+  setupButtons(); 
   startGPS();
   displaysetup();
   radioon();
-
+  batteryCheck(); //Display callsign of device, and battery voltage for the TTGO T-Beam
 }
 
 void loop(){
@@ -108,5 +120,6 @@ void loop(){
   rx();
   beaconAction.check(); //check if it is time to send a beacon (ID the digipeater)
   getGPS();
-  
+ // batteryCheck();
+   button.loop();
 }
