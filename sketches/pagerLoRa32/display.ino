@@ -45,8 +45,9 @@ void displayCall() {
 void displayPath() {
   oled.clear();
   int count = 0;
+  oled.println("\nFrom : " + from);
   for (int i=1;i<4;i++){
-    if (path[i].indexOf("N0CALL") > 0) {
+    if (path[i].indexOf("NOCALL") >= 0) { } else {
     oled.print("Hop "); oled.print(i); oled.println(": " + path[i]);
     count++;
     } 
@@ -56,4 +57,3 @@ void displayPath() {
   oled.println("");
   oled.println("RSSI: " + rssi);
 }
- 

@@ -7,6 +7,7 @@
 // September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string)
 // September 16, 2020 version 0.0.7 (a) added voltage reading for display (only for T-Beam)
 // Sept 19, 2020 version 0.0.8 added button, added display path for T-Beam, and TTGO LoRa32
+// Sept 22, 2020 v 0.0.8(a) corrected path display error
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -59,7 +60,7 @@
 SSD1306AsciiWire oled;
 
 #define CQMSG "LoRaAPS net pager"
-String CALLSIGN="N0CAL-02"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="KD8BXP-02"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
 int       loraSpreadingFactor = 9;
@@ -82,7 +83,7 @@ String baChStatus = "No charging"; //battery status
 int displayChange = 1;
 String from = "N0CAL-00";
 String holdMsg = "No Message";
-String path[4] = {"","N0CALL1", "N0CALL2", "N0CALL3"};
+String path[4] = {"","NOCALL1", "NOCALL2", "NOCALL3"};
 String rssi;
 
 void beacon();
