@@ -1,8 +1,9 @@
-//This sketch is written for the LoRa32 ESP32 board, the oled is not used, It should be used as a RELAY/WIDE digipeater
+//This sketch is written for the LoRa32u4 board, It should be used as a RELAY/WIDE digipeater
 //It can also be used as a serial interface if connected to a computer. But would take some work to get it to gate to the MQTT broker
 //This sketch should be able to be adapted for other AVR boards 
-// September 2020, base version code 0.0.5
-// September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string) 
+// September 2020, base version code 0.0.5 
+// September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string)
+// Oct 12, 2020 v0.0.8 merged relay32u4 & relayLoRa32 and renamed to digipeat
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -28,18 +29,29 @@
 // Original Library by Alexander Brevig https://playground.arduino.cc/Code/TimedAction/
 // A fork of the project was found on Github https://github.com/Glumgad/TimedAction
 
-//These must match for your specific board, these should work for the LoRa32u4 boards, but if it fails, check here.
-#define SS      18    
-#define RST     14
-#define DI0     26
-#define BAND    432300000 // local frequencys, must match!
+//Define your board type Leonardo32u4 Default
+//#define LoRa32 1
+#define Leonardo32u4 1
 
-#define LED 13 //LED Pin
+
+//These must match for your specific board, these should work for the LoRa32u4 boards, but if it fails, check here.
+#ifdef Leonardo32u4
+  #define SS      8    
+  #define RST     4
+  #define DI0     7
+  #define LED 13 //LED Pin
+#elif LoRa32
+  #define SS      18    
+  #define RST     14
+  #define DI0     26  
+  #define LED 13 //LED Pin ??
+#endif
 
 #define CQMSG "LoRaAPS net digipeater"
-String CALLSIGN="N0CAL-01"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="KD8BXP-01"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
+#define BAND    432300000 // local frequencys, must match!
 int       loraSpreadingFactor = 9;
 int       loraCodingRate      = 5;
 int       loraTxPower         = 17;
@@ -68,9 +80,8 @@ void setup()
   Serial.begin(9600);
   Serial.setTimeout(10);
   //while (!Serial); //if just the the basic function, must connect to a computer
-  delay(1000);
-  inputString.reserve(200);
-  SPI.begin(5,19,27,18);
+  delay(3000);
+  inputString.reserve(200);  
   radioon();
 
 }
