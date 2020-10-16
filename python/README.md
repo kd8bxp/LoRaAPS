@@ -16,5 +16,7 @@ This two scripts use urwid.
 lorasun.py - this is an attempt to make something useful for the LoRaMaDor project this program will check the times (UTC) of the Sun rise, and Sun set for a given latitude and longitude. After getting the information it will send to a LoRaMaDor node of your choice. You need a LoRaMaDor board hooked to the computer. Problem, this sends too much for the node to display correctly, but you can read it from a serial port copyright 2020, Aug 17, 2020 LeRoy Miller KD8BXP v0.0.1  
 this uses urllib.request, and json  
 
+Added Oct 15, 2020 - monitorMQTT which subscribes to the LoRaAPS topic, and saves the history of the gateway to a file called LoRaAPS_History.txt tested with python3 and requires the paho.mqtt.client   
+
 I am pretty new to python, so there is still a lot I need to learn, please feel free to update this with improvements but please share so I can see and learn something. Thanks, LeRoy KD8BXP  
 

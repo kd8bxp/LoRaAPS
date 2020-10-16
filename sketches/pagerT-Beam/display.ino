@@ -39,15 +39,7 @@ void wordWrap(String sr) {
     snprintf(voltBuffer, sizeof(voltBuffer), "Volts: %.2fV", axp.getBattVoltage() / 1000.0);
     static char volbuffer[128];
         snprintf(volbuffer, sizeof(volbuffer), "%.2fmA", axp.isChargeing() ? axp.getBattChargeCurrent() : axp.getBattDischargeCurrent());
-        //if (axp.isChargingIRQ()) {
-        //    baChStatus = "Charging";
-        //} else {
-        //    baChStatus = "Not Charging";
-        //}
-        //if (axp.isVbusRemoveIRQ()) {
-        //    baChStatus = "Not Charging";
-        // }
-        //oled.clear();
+       
         oled.home();
         oled.println("");
         oled.print("My Call: ");
@@ -57,7 +49,6 @@ void wordWrap(String sr) {
         oled.print(axp.isChargeing() ? "Charge: ":"Discharge: ");
         oled.println(volbuffer);
         
-        //oled.println("\nStatus: " + baChStatus);
   }
 }
 
@@ -75,4 +66,27 @@ void displayPath() {
   if (count == 0) {oled.println("Direct Connection"); } else {oled.print("Total Hops: "); oled.println(count); }
   oled.println("");
   oled.println("RSSI: " + rssi);
+}
+
+void displayLocation() {
+  oled.clear();
+  if (gps.location.isValid()) {
+  oled.print("Lat: ");
+  oled.println(gps.location.lat(), 5);
+  oled.print("Lon: ");
+  oled.println(gps.location.lng(), 4);
+  oled.print("Satellites: ");
+  oled.println(gps.satellites.value());
+  oled.print("Alt: ");
+  oled.print(gps.altitude.feet() / 3.2808);
+  oled.println("M");
+  oled.print("Time: ");
+  oled.print(gps.time.hour());
+  oled.print(":");
+  oled.print(gps.time.minute());
+  oled.print(":");
+  oled.println(gps.time.second());
+  } else {
+    oled.println("Check GPS.");
+  }
 }

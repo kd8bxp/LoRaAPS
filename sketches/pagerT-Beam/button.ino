@@ -19,13 +19,16 @@ void click(Button2& btn) {
     displayPath();
     break;
     case 4:
+    displayLocation();
+    break;
+    case 5:
     oled.clear();
     break;
     default:
     batteryCheck();
     break;
   }
-  if (displayChange>4) {displayChange=1;}
+  if (displayChange>5) {displayChange=1;}
 }
 
 void longClick(Button2& btn) {

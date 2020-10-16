@@ -18,10 +18,12 @@ void txMsg(){
   path.add("NOCALL3");
   //origin of message, each additional hop added to list 
 
+if (gps.location.isValid()) {
   JsonArray& gpsCoordinate = root.createNestedArray("C"); //GPS coordinate
   gpsCoordinate.add(gps.location.lat());
   gpsCoordinate.add(gps.location.lng());
-  
+}
+
   LoRa.beginPacket();
    
   root.printTo(radiopacket);
