@@ -39,6 +39,10 @@ if (pkt.indexOf(CALLSIGN) > 0) {
         //Get From Call, set status to "FromCall LoRaAPS net"
         //set latitude/longitude symbol try \0
         //send message to aprs
+        String remoteLocation = convertToDMM(root["C"][0], root["C"][1]);
+        msg = root["P"][0].as<String>() + " LoRaAPS net";
+        aprsSend(remoteLocation, "0");
+        
       }
    String radiopacket;
    root.printTo(radiopacket);

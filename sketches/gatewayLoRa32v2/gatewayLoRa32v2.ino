@@ -36,9 +36,12 @@
 #define MQTT_MAX_PACKET_SIZE 500 //Need to set this in PubSubClient.h MQTT Packet Size
 
 //These must match for your specific board, these should work for the LoRa32u4 boards, but if it fails, check here.
-#define SS      18    
-#define RST     14
-#define DI0     26
+#define SCK     5    // GPIO5  -- SX1278's SCK
+#define MISO    19   // GPIO19 -- SX1278's MISO
+#define MOSI    27   // GPIO27 -- SX1278's MOSI
+#define SS      18   // GPIO18 -- SX1278's CS
+#define RST     23   // GPIO14 -- SX1278's RESET
+#define DI0     26   // GPIO26 -- SX1278's IRQ(Interrupt Request)
 #define BAND    432300000 // local frequencys, must match!
 
 #define LED 13 //LED Pin
@@ -105,7 +108,7 @@ void setup()
   //while (!Serial); //if just the the basic function, must connect to a computer
   delay(1000);
   inputString.reserve(200);
-  SPI.begin(5,19,27,18);
+  SPI.begin(SCK,MISO,MOSI,SS);
   setupWiFi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
