@@ -10,6 +10,7 @@ void rx() {
     temp = (char)LoRa.read();
     buf1 += temp;
   }
+  rssi = String(LoRa.packetRssi(),DEC);
   char buf[buf1.length()+1];
   buf1.toCharArray(buf, buf1.length()+1);
   checkPacket(buf);     
@@ -38,7 +39,7 @@ if (pkt.indexOf(CALLSIGN) > 0) {
   displayChange = 2;
   displayMsg(from,holdMsg); //Display message
   }
- 
+  
 } else {
    //This is where we decode the message to get retransmit count, and to add our call if needed, and then to retransmit the message
    StaticJsonBuffer<500> jsonBuffer;
@@ -46,7 +47,7 @@ if (pkt.indexOf(CALLSIGN) > 0) {
 
    //Check for BLT, BEACON, CQ, WX special callsigns
    String t = root["T"];
-   if (t == "BEACON" || t == "CQ" || t == "WX" || t == "BLN") {
+   if (t == "BEACON" || t == "CQ" || t == "WX" || t == "BLT") {
     from = root["P"][0].as<String>();
     String temp = from + "\n" + t;
     holdMsg = root["M"].as<String>();

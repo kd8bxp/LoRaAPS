@@ -1,6 +1,10 @@
 
 void displaysetup() {
+  #ifdef TBeam
   oled.begin(&Adafruit128x64, I2C_ADDRESS);
+  #elif LoRa32
+  oled.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
+  #endif
   oled.setFont(Adafruit5x7);
   oled.clear();
 }
@@ -33,6 +37,7 @@ void wordWrap(String sr) {
   
  }
 
+#ifdef TBeam
  void batteryCheck() {
   if (axp.isBatteryConnect()) {
     static char voltBuffer[128];
@@ -51,6 +56,16 @@ void wordWrap(String sr) {
         
   }
 }
+#elif LoRa32
+void displayCall() {
+  
+        oled.home();
+        oled.println("");
+        oled.print("My Call: ");
+        oled.println(CALLSIGN);
+        
+}
+#endif
 
 void displayPath() {
   oled.clear();
@@ -68,6 +83,7 @@ void displayPath() {
   oled.println("RSSI: " + rssi);
 }
 
+#ifdef TBeam
 void displayLocation() {
   oled.clear();
   if (gps.location.isValid()) {
@@ -90,3 +106,4 @@ void displayLocation() {
     oled.println("Check GPS.");
   }
 }
+#endif

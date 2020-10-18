@@ -1,12 +1,15 @@
-//This sketch is written for the TTGO LoRa32-OLED v1 board, It should be used as a PAGER and digipeater
+//This sketch is written for the TTGO T-Beam w/OLED v1 board, It should be used as a PAGER and digipeater
 //Bluetooth enabled for using a Serial Bluetooth terminal on the phone.  
 //It can also be used as a serial interface if connected to a computer. 
 //This sketch should be able to be adapted for other boards (AVR/ESP32)
-// September 2020, base version code 0.5.0 
+// September 2020, base version code 0.0.5
 // Sept 14, 2020 added serial/bluetooth print messages v0.0.6
 // September 16, 2020 version 0.0.7 base removed "F" from transmit, changed checks to check "P",0 for callsign (This should save a little more space in the json string)
+// September 16, 2020 version 0.0.7 (a) added voltage reading for display (only for T-Beam)
 // Sept 19, 2020 version 0.0.8 added button, added display path for T-Beam, and TTGO LoRa32
 // Sept 22, 2020 v 0.0.8(a) corrected path display error
+// Oct 15, 2020 v 0.0.9 added GPS information to display
+// Oct 17, 2002 v 0.0.10 combined pagerLoRa32 and pagerTBeam sketches to simplify development, also corrected BLT display (was BLN should have been BLT)
 
 /* Copyright (c) 2020 LeRoy Miller, KD8BXP
  
@@ -25,6 +28,7 @@
 
  */
   
+//These Libraries are used for all ESP32 boards with OLED
 #include <SPI.h>
 #include <LoRa.h> //https://github.com/sandeepmistry/arduino-LoRa
 #include <ArduinoJson.h> //version 5.13.5 (needs updated)
@@ -37,27 +41,46 @@
 #include "SSD1306AsciiWire.h"
 #include "Button2.h"; //https://github.com/LennartHennigs/Button2
 
+//Define your board type TBeam Default
+#define LoRa32 1
+//#define LoRa32v2 1 //not yet added
+//#define TBeam 1
+
+#ifdef TBeam
 //These must match for your specific board, these should work for the LoRa32u4 boards, but if it fails, check here.
 #define SS      18    
 #define RST     14
 #define DI0     26
-#define BAND    432300000 // local frequencys, must match!
-
+//These Libraries are used with the TBeam
+#include <TinyGPS++.h> //https://github.com/mikalhart/TinyGPSPlus
+#include <axp20x.h> //https://github.com/lewisxhe/AXP202X_Library
+#include "Button2.h"; //https://github.com/LennartHennigs/Button2
 #define LED 2 //LED Pin
+#define BUTTON_PIN  38 //Button for TTGO T-Beam v1
+TinyGPSPlus gps;
+HardwareSerial GPS(1);
+AXP20X_Class axp;
+#elif LoRa32
+//These must match for your specific board, these should work for the LoRa32u4 boards, but if it fails, check here.
+#define SS      18    
+#define RST     14
+#define DI0     26
+#define LED 2 //LED Pin
+#define RST_PIN 16
+#define BUTTON_PIN  0 //Button for the TTGO LoRa32 boards
+#endif
+
+#define BAND    432300000 // local frequencys, must match!
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
-#define BUTTON_PIN  0 //Button for the TTGO LoRa32 boards
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-#define OLED_RESET     16 // Reset pin # (or -1 if sharing Arduino reset pin)
-// 0X3C+SA0 - 0x3C or 0x3D
 #define I2C_ADDRESS 0x3C
-#define RST_PIN 16
 SSD1306AsciiWire oled;
 
 #define CQMSG "LoRaAPS net pager"
-String CALLSIGN="KD8BXP-00"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
+String CALLSIGN="N0CAL-03"; //this will be appended to the message when a packet is digipeated. This is also the callsign to Beacon an ID 
 
 //For this to work on a local level these parameters need to match
 int       loraSpreadingFactor = 9;
@@ -67,15 +90,16 @@ uint32_t  loraBandwidth       = 62500; //125E6;
 //This results in about 879bps if you believe this site https://unsigned.io/understanding-lora-parameters/
 //or maybe 488bps from this website https://www.rfwireless-world.com/calculators/LoRa-Data-Rate-Calculator.html
 
-String inputString;
+String inputString, msg;
 bool stringComplete = false;
-String call, msg;
+String call;
 String radiopacket;
 bool callPassCheck = false;
 bool msgPassCheck = false;
 bool pass1 = false;
 bool pass2 = false;
 bool pass3 = false;
+String baChStatus = "No charging"; //battery status
 int displayChange = 1;
 String from = "N0CAL-00";
 String holdMsg = "No Message";
@@ -98,12 +122,31 @@ void setup()
   //while (!Serial); //if just the the basic function, must connect to a computer
   delay(1000);
   inputString.reserve(200);
-  SPI.begin(5,19,27,18);
+  //Need to define these pins
+  SPI.begin(5,19,27,18); //TTGO SPI PINs
+
+  //Need to define these pins
+  #ifdef TBeam
+  Wire.begin(21,22); //TTGO T-BEAM OLED
+  #elif LoRa32
   Wire.begin(4,15);
+  #endif
+  
   setupButtons(); 
+  
+  #ifdef TBeam
+  startGPS();
+  #endif
+  
   displaysetup();
   radioon();
+
+  //need one function to handle both (these are the start up screens for the devices)
+  #ifdef TBeam
+  batteryCheck(); //Display callsign of device, and battery voltage for the TTGO T-Beam
+  #elif LoRa32
   displayCall(); //display callsign of device (this is different for the ttgo t-beam device that also includes battery voltages)
+  #endif
 }
 
 void loop(){
@@ -112,6 +155,11 @@ void loop(){
   BTEvent();
   rx();
   beaconAction.check(); //check if it is time to send a beacon (ID the digipeater)
-  button.loop();
   
+  #ifdef TBeam
+  getGPS();
+  // batteryCheck();
+  #endif
+  
+  button.loop();
 }
