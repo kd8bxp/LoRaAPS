@@ -1,3 +1,7 @@
+# Archived Aug 20, 2024
+
+This was an attempt to make something that was a "modern" packet/messaging system. It wasn't the first, as said below it was inspired by Travis Goodspeeds LoRaHam project.  But over the last 4 years better more adapted system have become avaiable, and I haven't worked on this.  I am archiving and keeping for historical reasons, but there other systems that are easier and better at this point.
+
 # LoRaAPS (LoRa Amateur Packet Service)
 
 This project was inspired by Travis Goodspeeds LoRaHam project, and Elvis Pfutzenreuter's LoRaMaDor project.  
